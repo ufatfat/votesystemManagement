@@ -9,6 +9,16 @@
       <el-table-column prop="username" label="姓名" align="center" fixed="left"></el-table-column>
       <el-table-column prop="work_name" label="作品名称" align="center" width="150" fixed="left"></el-table-column>
       <el-table-column prop="img_num" label="图纸张数" align="center" fixed="left"></el-table-column>
+      <el-table-column prop="img_list" label="图纸预览" align="center" fixed>
+        <template slot-scope="scope">
+          <template v-if="scope.row.img_list.length===0">
+            暂未上传
+          </template>
+          <template v-else>
+            <el-image :src="scope.row.img_list[0]" :preview-src-list="scope.row.img_list"></el-image>
+          </template>
+        </template>
+      </el-table-column>
       <el-table-column prop="is_enroll_form_uploaded" label="报名表" align="center" width="120" fixed="left">
         <template slot-scope="scope">
           <el-button v-if="scope.row.is_enroll_form_uploaded" type="primary" size="mini" @click="download(scope, 'enroll_form')">点此下载</el-button>
