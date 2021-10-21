@@ -115,6 +115,12 @@ export default {
         num: this.num,
       }
       getEnrollStats(data).then(res => {
+        let data = res.data.data
+        data.forEach(item => {
+          if (item.img_list.length > 0) {
+            item.img_list.forEach((i, idx) => item[idx] = i.slice(0, i.lastIndexOf(".")) + "_compressed" + i.slice(i.lastIndexOf("."), i.length))
+          }
+        })
         this.enrollStatsData = res.data.data
         this.total = res.data.total
       })
