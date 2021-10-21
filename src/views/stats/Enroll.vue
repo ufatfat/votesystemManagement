@@ -1,19 +1,23 @@
 <template>
   <div>
-    <el-table :data="enrollStatsData" style="width: 98%; margin: 50px auto;" :fit="true">
-      <el-table-column type="index" label="序号" align="center" fixed="left"></el-table-column>
+    <el-table :data="enrollStatsData" style="width: 98%; margin: 50px auto;" :fit="true" >
+      <el-table-column type="index" label="序号" align="center" fixed="left">
+        <template slot-scope="scope">
+          {{ (page-1)*num+scope.$index+1 }}
+        </template>
+      </el-table-column>
       <el-table-column prop="username" label="姓名" align="center" fixed="left"></el-table-column>
       <el-table-column prop="work_name" label="作品名称" align="center" width="150" fixed="left"></el-table-column>
       <el-table-column prop="img_num" label="图纸张数" align="center" fixed="left"></el-table-column>
       <el-table-column prop="is_enroll_form_uploaded" label="报名表" align="center" width="120" fixed="left">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.is_enroll_form_uploaded" type="primary" size="mini" @click="download">点此下载</el-button>
+          <el-button v-if="scope.row.is_enroll_form_uploaded" type="primary" size="mini" @click="download(scope, 'enroll_form')">点此下载</el-button>
           <span v-else>暂未上传</span>
         </template>
       </el-table-column>
       <el-table-column prop="is_design_desc_uploaded" label="设计说明" align="center" width="120" fixed="left">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.is_design_desc_uploaded" type="primary" size="mini">点此下载</el-button>
+          <el-button v-if="scope.row.is_design_desc_uploaded" type="primary" size="mini" @click="download(scope, 'design_desc')">点此下载</el-button>
           <span v-else>暂未上传</span>
         </template>
       </el-table-column>
@@ -52,19 +56,21 @@
     </el-table>
     <div class="pagination">
       <el-pagination
-          layout="prev, pager, next"
+          layout="total, sizes, prev, pager, next, jumper"
           :current-page="page"
           @current-change="pageChangeHandler"
+          @size-change="sizeChangeHandler"
           :page-size.sync="num"
           :total.sync="total"
-          :hide-on-single-page="true"
+          :page-sizes="[10,20,50]"
       ></el-pagination>
+      <el-button @click="getFileData">下载</el-button>
     </div>
   </div>
 </template>
 
 <script>
-import {getEnrollStats} from "@/apis";
+import {getEnrollStats, getFileData} from "@/apis";
 export default {
   name: "Enroll",
   data() {
@@ -86,6 +92,13 @@ export default {
       this.page = val
       this.getData()
     },
+    sizeChangeHandler () {
+      this.getData()
+    },
+    download (scope, type) {
+      console.log(scope)
+      window.open("https://ivillages-images.oss-cn-qingdao.aliyuncs.com/1/" + scope.row.user_id + "/" + type + ".docx")
+    },
     getData () {
       let data = {
         page: this.page,
@@ -93,6 +106,60 @@ export default {
       }
       getEnrollStats(data).then(res => {
         this.enrollStatsData = res.data.data
+        this.total = res.data.total
+      })
+    },
+    getFileData () {
+      let str = "序号,姓名,作品名称,图纸张数,报名表,设计说明,性别,学历层次,学校,学院,专业,指导教师,团队成员,入学时间,毕业时间,学号,电话号码,电子邮箱,证件类型,证件号码,消息来源\n"
+      let map = ["username", "work_name", "img_num", "is_enroll_form_uploaded", "is_design_desc_uploaded", "sex", "edu_bg", "univ", "school", "major", "teacher", "teammates", "in_time", "out_time", "stu_id", "phone", "email", "id_type", "id_no", "msg_source"]
+      getFileData().then(res => {
+        let data = res.data
+        data.forEach((item, idx) => {
+          str += idx + "\t,"
+          for (let i in map) {
+            switch (map[i]) {
+              case "img_num":
+                str += item[map[i]] === undefined ? "0," : `${item[map[i]] + "\t"},`
+                break
+              case "sex":
+                str += item[map[i]] === 1 ? "男," : "女,"
+                break
+              case "edu_bg":
+                str += `${this.eduBG[item[map[i]] - 1] + "\t"},`
+                break
+              case "msg_source":
+                str += `${this.msgSource[item[map[i]] - 1] + "\t"},`
+                break
+              case "id_type":
+                str += `${this.IDType[[item[map[i]]] - 1] + "\t"},`
+                break
+              case "is_enroll_form_uploaded":
+                if (item[map[i]]) {
+                  str += "https://ivillages-images.oss-cn-qingdao.aliyuncs.com/1/" + item["user_id"] + "/enroll_form.docx\t,"
+                } else {
+                  str += "暂未上传,"
+                }
+                break
+              case "is_design_desc_uploaded":
+                if (item[map[i]]) {
+                  str += "https://ivillages-images.oss-cn-qingdao.aliyuncs.com/1/" + item["user_id"] + "/design_desc.docx\t,"
+                } else {
+                  str += "暂未上传,"
+                }
+                break
+              default:
+                str += `${item[map[i]] + "\t"},`
+            }
+          }
+          str += "\n"
+        })
+        let uri = "data:text/csv;charset=utf-8,\ufeff" + encodeURIComponent(str)
+        let link = document.createElement("a")
+        link.href = uri
+        link.download = "数据.csv"
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
       })
     }
   }

@@ -9,3 +9,7 @@ export function getEnrollStats (data) {
         params: data
     })
 }
+
+export function getFileData () {
+    return request.get("/manageapi/stats/data")
+}
