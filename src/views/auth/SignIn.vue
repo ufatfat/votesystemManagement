@@ -21,9 +21,10 @@
 </template>
 
 <script>
-// import {signIn} from "@/apis"
+import {signIn} from "../../apis"
+import {mapGetters, mapMutations} from "vuex"
 export default {
-  name: "Sign-in",
+  name: "SignIn",
   data () {
     return {
       username: "",
@@ -32,31 +33,42 @@ export default {
   },
   mounted() {
   },
+  computed: {
+    ...mapGetters([
+        "userInfo",
+    ])
+  },
   methods: {
+    ...mapMutations([
+        "updateUserInfo"
+    ]),
     signIn () {
-      /*let data = {
+      let data = {
         username: this.username,
         password: this.password,
       }
       signIn(data).then(res => {
-        console.log(res)
-      })*/
-      if (this.username === "admin" && this.password === "admin") {
-        sessionStorage.setItem("token", 1)
-        this.$message({
-          type: "success",
-          message: "登录成功",
+        setTimeout(() => {
+          this.$router.push({
+            path: "/"
+          })
+        }, 200)
+        let data = res.data
+        this.updateUserInfo({
+          username: data.admin_name,
         })
-        this.$router.push({
-          path: "/enroll_stats"
-        })
-      } else {
-        this.$message({
-          type: "error",
-          message: "用户名/密码错误"
-        })
-        sessionStorage.clear()
-      }
+      }).catch(error => {
+        if (error.response.status === 404)
+          this.$message({
+            type: "error",
+            message: "用户名/密码错误！",
+          })
+        else
+          this.$message({
+            type: "error",
+            message: "该账号不是当前比赛评委！"
+          })
+      })
     }
   }
 }

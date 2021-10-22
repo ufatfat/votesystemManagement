@@ -1,12 +1,10 @@
 <template>
-  <div style="z-index: 999; height: calc(100% - 60px);">
-
-  </div>
+  <div></div>
 </template>
 
 <script>
 export default {
-  name: "Sidebar"
+  name: "System"
 }
 </script>
 

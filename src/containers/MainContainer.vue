@@ -3,27 +3,24 @@
     <el-header>
       <Header></Header>
     </el-header>
-    <div class="main-bottom">
-      <Siderbar></Siderbar>
-      <el-container>
-        <el-main>
-          <Breadcrumb></Breadcrumb>
-          <transition name="fade-transform" mode="out-in">
-            <router-view></router-view>
-          </transition>
-        </el-main>
-        <!--el-footer>
-          <Footer></Footer>
-        </el-footer-->
-      </el-container>
-    </div>
-    <Scrolltotop></Scrolltotop>
+    <el-container style="position: absolute; top: 60px; left: 0; width: 100%;">
+      <el-main>
+        <router-view></router-view>
+      </el-main>
+      <!--el-footer>
+        <Footer></Footer>
+      </el-footer-->
+    </el-container>
+<!--    <Scrolltotop></Scrolltotop>-->
   </div>
 </template>
 
 <script>
+import Header from "../components/header/Header"
+
 export default {
-  name: "MainContainer"
+  name: "MainContainer",
+  components: {Header},
 }
 </script>
 
