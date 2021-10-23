@@ -33,7 +33,7 @@
           </template>
           <el-menu-item-group>
             <template slot="title">系统</template>
-            <el-menu-item style="text-align: center;" index="system_config">系统设置</el-menu-item>
+            <el-menu-item style="text-align: center;" disabled index="system_config">系统设置</el-menu-item>
           </el-menu-item-group>
           <el-menu-item-group>
             <template slot="title">比赛</template>

@@ -9,9 +9,9 @@
         </template>
       </el-table-column>
       <template v-for="(item, idx) in judgeInfos">
-        <el-table-column :label="item.name" v-bind:key="idx" align="center">
+        <el-table-column :label="item.name" v-bind:key="idx" align="center" :index="idx">
           <template slot-scope="scope">
-            {{ isVoted(scope.column.id, scope.row.user_id)}}
+            {{ isVoted(scope.column.index, scope.row.user_id)}}
           </template>
         </el-table-column>
       </template>
@@ -44,9 +44,7 @@ export default {
       voteInfos: [],
       judgeInfos: [],
       isVoted: (columnID, workID) => {
-        let idx = (~~columnID.slice(columnID.lastIndexOf("_")+1, columnID.length)) - 2
-        if (idx > this.judgeInfos.length) location.reload()
-        if (this.judgeInfos[idx].voted_works.includes(workID.toString())) return 1
+        if (this.judgeInfos[columnID].voted_works.includes(workID.toString())) return 1
         else return 0
       },
       tableLoading: false,

@@ -48,7 +48,7 @@ export default {
   mounted() {
     getRoundInfo().then(res => {
       this.currentRoundIdx = res.data.current_round_idx
-      this.selectedRoundID = res.data.current_round_idx
+      this.selectedRoundID = res.data.current_round_id
       this.roundInfo = res.data.round_info
       this.getData()
     })
