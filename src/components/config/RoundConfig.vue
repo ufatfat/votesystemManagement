@@ -60,12 +60,6 @@ export default {
   data () {
     return {
       roundInfo: [],
-      newRoundInfoDemo: {
-        round_desc: "",
-        max_votes_num: null,
-        promotion_num: null,
-        is_negative: false,
-      },
       newRoundInfo: {
         round_desc: "",
         max_votes_num: null,
@@ -104,7 +98,12 @@ export default {
       })
     },
     clearForm () {
-      this.newRoundInfo = this.newRoundInfoDemo
+      this.newRoundInfo = {
+        round_desc: "",
+        max_votes_num: null,
+        promotion_num: null,
+        is_negative: false,
+      }
     },
     submitForm () {
       let data = this.newRoundInfo
