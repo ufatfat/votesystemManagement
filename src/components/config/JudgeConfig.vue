@@ -64,7 +64,11 @@ export default {
         username: "",
         password: "",
       },
-      newJudgeInfoDemo: {},
+      newJudgeInfoDemo: {
+        name: "",
+        username: "",
+        password: "",
+      },
       tableLoading: false,
       editDialogVisible: false,
       editSubmit: false,
@@ -97,7 +101,7 @@ export default {
       })
     },
     clearForm () {
-      this.newJudgeInfo = new Object(this.newJudgeInfoDemo)
+      this.newJudgeInfo = this.newJudgeInfoDemo
     },
     submitForm () {
       let data = this.newJudgeInfo
