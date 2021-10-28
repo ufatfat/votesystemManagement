@@ -104,7 +104,7 @@ export default {
       })
     },
     clearForm () {
-      this.newRoundInfo = this.newRoundInfoDemo
+      this.newRoundInfo = new Object(this.newRoundInfoDemo)
     },
     submitForm () {
       let data = this.newRoundInfo

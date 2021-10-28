@@ -97,7 +97,7 @@ export default {
       })
     },
     clearForm () {
-      this.newJudgeInfo = this.newJudgeInfoDemo
+      this.newJudgeInfo = new Object(this.newJudgeInfoDemo)
     },
     submitForm () {
       let data = this.newJudgeInfo
