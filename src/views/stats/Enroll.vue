@@ -73,7 +73,7 @@
     <div class="pagination">
       <el-pagination
           layout="total, sizes, prev, pager, next, jumper"
-          :current-page="page"
+          :current-page.sync="page"
           @current-change="pageChangeHandler"
           @size-change="sizeChangeHandler"
           :page-size.sync="num"
@@ -103,14 +103,21 @@ export default {
     }
   },
   mounted() {
+    this.page = this.$route.query["page"] ?? 1
+    this.num = this.$route.query["num"] ?? 20
     this.getData()
   },
   methods: {
     pageChangeHandler (val) {
+      let url = location.pathname + "?page=" + val + "&num=" + this.num
+      history.pushState({url: url, title: document.title}, document.title, url)
       this.page = val
       this.getData()
     },
-    sizeChangeHandler () {
+    sizeChangeHandler (val) {
+      let url = location.pathname + "?page=" + this.page + "&num=" + val
+      history.pushState({url: url, title: document.title}, document.title, url)
+      this.num = val
       this.getData()
     },
     previewModeChangeHandler () {

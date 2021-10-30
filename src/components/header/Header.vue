@@ -65,6 +65,7 @@ export default {
       eduBG: ["中职中专","高职高专","本科","硕士","博士","其它"],
       IDType: ["身份证","护照","港澳居民来往内地通行证"],
       msgSource: ["乡村复兴论坛","知识雷锋","其它"],
+      workGroup: ["骆驼道村游客服务中心改造设计","小河村接待中心建筑设计","牵牛镇村玉皇阁景观修复设计","辛兴村兽医站景观改造设计","下董寨村悬崖餐厅改造设计"],
     }
   },
   computed: {
@@ -89,14 +90,21 @@ export default {
       })
     },
     getFileData () {
-      let str = "序号,姓名,作品名称,图纸张数,报名表,设计说明,性别,学历层次,学校,学院,专业,指导教师,团队成员,入学时间,毕业时间,学号,电话号码,电子邮箱,证件类型,证件号码,消息来源\n"
-      let map = ["username", "work_name", "img_num", "is_enroll_form_uploaded", "is_design_desc_uploaded", "sex", "edu_bg", "univ", "school", "major", "teacher", "teammates", "in_time", "out_time", "stu_id", "phone", "email", "id_type", "id_no", "msg_source"]
+      let str = "序号,姓名,设计点位,上传时间,作品名称,图纸张数,报名表,设计说明,性别,学历层次,学校,学院,专业,指导教师,团队成员,入学时间,毕业时间,学号,电话号码,电子邮箱,证件类型,证件号码,消息来源\n"
+      let map = ["username", "group_id", "updated_timestamp", "work_name", "img_num", "is_enroll_form_uploaded", "is_design_desc_uploaded", "sex", "edu_bg", "univ", "school", "major", "teacher", "teammates", "in_time", "out_time", "stu_id", "phone", "email", "id_type", "id_no", "msg_source"]
       getFileData().then(res => {
         let data = res.data
         data.forEach((item, idx) => {
           str += idx + "\t,"
           for (let i in map) {
             switch (map[i]) {
+              case "group_id":
+                if (item[map[i]]) {
+                  str += `${this.workGroup[item[map[i]] - 1] + "\t"},`
+                } else {
+                  str += "未选择,"
+                }
+                break
               case "img_num":
                 str += item[map[i]] === undefined ? "0," : `${item[map[i]] + "\t"},`
                 break
