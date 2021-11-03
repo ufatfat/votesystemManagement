@@ -3,7 +3,8 @@
     <RoundTable style="width: 300px;"></RoundTable>
     <div style="width: calc(100% - 320px);">
       <div style="display: flex; justify-content: space-evenly; align-items: center;">
-        <span>当前可晋级作品数：{{ promotionNum }}</span>
+        <span>当前平票作品数：{{ promotionNum }}</span>
+        <span>当前已晋级作品数：{{ promotedNum }}</span>
         <span>当前轮次可晋级作品数：{{ roundInfo[currentRoundIdx-1].promotion_num }}</span>
         <span>已选中晋级作品数：{{ votedWorks.length }}</span>
         <template v-if="currentRoundIdx<roundInfo.length">
@@ -65,6 +66,7 @@ export default {
       roundInfo: [],
       currentRoundIdx: 0,
       promotionNum: 0,
+      promotedNum: 0,
       page: 1,
       num: 10,
       votedWorks: [],
@@ -107,13 +109,6 @@ export default {
       this.getData()
     },
     workBoxClickHandler (item) {
-      if ((this.votedWorks.length === this.roundInfo[this.currentRoundIdx-1].promotion_num) && !item.checked) {
-        this.$message({
-          type: "warning",
-          message: "不能再选了！",
-        })
-        return
-      }
       item.checked = !item.checked
       this.checkChangeHandler(item)
     },
@@ -232,6 +227,7 @@ export default {
       }
       getPromotionInfo(data).then((res) => {
         this.promotionNum = res.data.total
+        this.promotedNum = (res.data.promoted_num - res.data.total)
         let data = res.data.promotion_info
         data.forEach(item => {
           if (this.votedWorks.includes(item.user_id)) item.checked = true
