@@ -19,7 +19,7 @@
     <div class="pagination">
       <el-pagination
           layout="total, sizes, prev, pager, next, jumper"
-          :current-page="page"
+          :current-page.sync="page"
           @current-change="pageChangeHandler"
           @size-change="sizeChangeHandler"
           :page-size.sync="num"
@@ -51,6 +51,8 @@ export default {
     }
   },
   mounted() {
+    this.page = this.$route.query["page"] ?? 1
+    this.num = this.$route.query["num"] ?? 20
     this.getData()
   },
   methods: {
@@ -58,21 +60,32 @@ export default {
       let sortOrder = p.order
       switch (sortOrder) {
         case "ascending":
+          this.page = this.$route.query["page"] ?? 1
+          this.num = this.$route.query["num"] ?? 20
           this.getData(1)
           break
         case "descending":
+          this.page = this.$route.query["page"] ?? 1
+          this.num = this.$route.query["num"] ?? 20
           this.getData(-1)
           break
         default:
+          this.page = this.$route.query["page"] ?? 1
+          this.num = this.$route.query["num"] ?? 20
           this.getData()
           break
       }
     },
     pageChangeHandler (val) {
+      let url = location.pathname + "?page=" + val + "&num=" + this.num
+      history.pushState({url: url, title: document.title}, document.title, url)
       this.page = val
       this.getData()
     },
-    sizeChangeHandler () {
+    sizeChangeHandler (val) {
+      let url = location.pathname + "?page=" + this.page + "&num=" + val
+      history.pushState({url: url, title: document.title}, document.title, url)
+      this.num = val
       this.getData()
     },
     getData (sortOrder = 0) {
@@ -83,8 +96,8 @@ export default {
         this.judgeInfos = data
       })
       let data = {
-        page: 1,
-        num: 20,
+        page: this.page,
+        num: this.num,
         round_idx: this.roundIdx,
         sort_order: sortOrder,
       }
