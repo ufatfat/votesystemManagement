@@ -3,7 +3,7 @@
     <el-table :data="voteInfos" v-loading="tableLoading" @sort-change="sortChange">
       <el-table-column label="作品信息" align="center" fixed="left" sortable="custom">
         <template slot-scope="scope">
-          <div><b>{{ scope.row.work_name }}</b></div>
+          <div><b>{{ scope.row.name }}</b></div>
           <el-image :src="scope.row.img_list[0]" :preview-src-list="scope.row.img_list" style="width: 60px;"></el-image>
           <div>当前票数：{{ scope.row.votes }}</div>
         </template>
@@ -43,6 +43,7 @@ export default {
       roundIdx: 1,
       voteInfos: [],
       judgeInfos: [],
+      order: 0,
       isVoted: (columnID, workID) => {
         if (this.judgeInfos[columnID].voted_works.includes(workID.toString())) return 1
         else return 0
@@ -60,21 +61,18 @@ export default {
       let sortOrder = p.order
       switch (sortOrder) {
         case "ascending":
-          this.page = this.$route.query["page"] ?? 1
-          this.num = this.$route.query["num"] ?? 20
-          this.getData(1)
+          this.order = 1
           break
         case "descending":
-          this.page = this.$route.query["page"] ?? 1
-          this.num = this.$route.query["num"] ?? 20
-          this.getData(-1)
+          this.order = -1
           break
         default:
-          this.page = this.$route.query["page"] ?? 1
-          this.num = this.$route.query["num"] ?? 20
-          this.getData()
+          this.order = 0
           break
       }
+      this.page = this.$route.query["page"] ?? 1
+      this.num = this.$route.query["num"] ?? 20
+      this.getData()
     },
     pageChangeHandler (val) {
       let url = location.pathname + "?page=" + val + "&num=" + this.num
@@ -88,7 +86,7 @@ export default {
       this.num = val
       this.getData()
     },
-    getData (sortOrder = 0) {
+    getData () {
       this.tableLoading = true
       getJudgeInfos().then(res => {
         let data = res.data
@@ -99,7 +97,7 @@ export default {
         page: this.page,
         num: this.num,
         round_idx: this.roundIdx,
-        sort_order: sortOrder,
+        sort_order: this.order,
       }
       getVotesStats(data).then(res => {
         let data = res.data.data
