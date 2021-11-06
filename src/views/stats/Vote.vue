@@ -52,12 +52,12 @@ export default {
     }
   },
   mounted() {
+    this.page = ~~(this.$route.query["page"] ?? 1)
+    this.num = ~~(this.$route.query["num"] ?? 20)
     getRoundInfo().then(res => {
       this.roundIdx = res.data.current_round_idx
       this.getData()
     })
-    this.page = ~~this.$route.query["page"] ?? 1
-    this.num = ~~this.$route.query["num"] ?? 20
   },
   methods: {
     sortChange (p) {
@@ -73,8 +73,8 @@ export default {
           this.order = 0
           break
       }
-      this.page = this.$route.query["page"] ?? 1
-      this.num = this.$route.query["num"] ?? 20
+      this.page = ~~(this.$route.query["page"] ?? 1)
+      this.num = ~~(this.$route.query["num"] ?? 20)
       this.getData()
     },
     pageChangeHandler (val) {

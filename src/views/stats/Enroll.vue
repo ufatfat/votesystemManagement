@@ -103,8 +103,8 @@ export default {
     }
   },
   mounted() {
-    this.page = this.$route.query["page"] ?? 1
-    this.num = this.$route.query["num"] ?? 20
+    this.page = ~~(this.$route.query["page"] ?? 1)
+    this.num = ~~(this.$route.query["num"] ?? 20)
     this.getData()
   },
   methods: {
