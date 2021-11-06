@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import {getJudgeInfos, getVotesStats} from "../../apis"
+import {getJudgeInfos, getRoundInfo, getVotesStats} from "../../apis"
 
 export default {
   name: "Vote",
@@ -52,9 +52,12 @@ export default {
     }
   },
   mounted() {
-    this.page = this.$route.query["page"] ?? 1
-    this.num = this.$route.query["num"] ?? 20
-    this.getData()
+    getRoundInfo().then(res => {
+      this.roundIdx = res.data.current_round_idx
+      this.getData()
+    })
+    this.page = ~~this.$route.query["page"] ?? 1
+    this.num = ~~this.$route.query["num"] ?? 20
   },
   methods: {
     sortChange (p) {
