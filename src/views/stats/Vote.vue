@@ -105,7 +105,11 @@ export default {
     },
     getData () {
       this.tableLoading = true
-      getJudgeInfos().then(res => {
+      let d = {}
+      this.roundInfo.forEach(item => {
+        if (item.round_index === this.roundIdx) d.round_id = item.round_id
+      })
+      getJudgeInfos(d).then(res => {
         let data = res.data
         data.forEach(item => item.voted_works = item.voted_works.split(","))
         this.judgeInfos = data

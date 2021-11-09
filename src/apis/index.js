@@ -14,8 +14,10 @@ export function getFileData () {
     return request.get("/manageapi/stats/data")
 }
 
-export function getJudgeInfos () {
-    return request.get("/manageapi/stats/judge")
+export function getJudgeInfos (data) {
+    return request.get("/manageapi/stats/judge", {
+        params: data
+    })
 }
 
 export function getVotesStats (data) {
