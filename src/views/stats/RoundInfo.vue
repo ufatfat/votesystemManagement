@@ -3,10 +3,16 @@
     <RoundTable style="width: 300px;"></RoundTable>
     <div style="width: calc(100% - 320px);">
       <div style="display: flex; justify-content: space-evenly; align-items: center;">
-        <span>当前平票作品数：{{ promotionNum }}</span>
-        <span>当前已晋级作品数：{{ promotedNum }}</span>
-        <span>当前轮次可晋级作品数：{{ roundInfo[currentRoundIdx-1].promotion_num }}</span>
-        <span>已选中晋级作品数：{{ votedWorks.length }}</span>
+        <span>平票：{{ promotionNum }}</span>
+        <span>已晋级：{{ promotedNum }}</span>
+        <span>可晋级：{{ roundInfo[currentRoundIdx-1].promotion_num }}</span>
+        <span>已选中：{{ votedWorks.length }}</span>
+        <template v-if="promotionNum>0">
+          <div>
+            <el-button size="mini" type="primary" @click="openJudgeRevote">评审端平票重投</el-button>&emsp;
+            <el-input-number size="mini" v-model="judgeCheckNum" controls controls-position="right" :min="0" :max="promotionNum" :step-strictly="true" :step="1" label="选择数量"></el-input-number>
+          </div>
+        </template>
         <template v-if="currentRoundIdx<roundInfo.length">
           <el-button size="small" type="warning" @click="openNextRound">开放下一轮次</el-button>
         </template>
@@ -20,7 +26,7 @@
             <template v-for="(item,idx) in row">
               <div class="workBox" v-bind:key="idx" :class="item.checked?'workBoxChecked':''" @click="workBoxClickHandler(item)">
                 <div class="imgNCheckBox">
-                  <div><el-checkbox v-model="item.checked" :disabled="(roundInfo[currentRoundIdx].promotion_num === votedWorks.length) && !item.checked" @click.self.prevent></el-checkbox></div>
+                  <div><el-checkbox v-model="item.checked" :disabled="(promotionNum === votedWorks.length) && !item.checked" @click.self.prevent></el-checkbox></div>
                   <div style="width: 148.5px; height: 210px;">
                     <el-image :src="item.img_list[0]" lazy></el-image>
                   </div>
@@ -56,7 +62,7 @@
 
 <script>
 import RoundTable from "../../components/roundInfo/RoundTable";
-import {openNextRound, getRoundInfo, getPromotionInfo} from "../../apis";
+import {openNextRound, getRoundInfo, getPromotionInfo, openJudgeRevote} from "../../apis";
 
 export default {
   name: "RoundInfo",
@@ -72,6 +78,7 @@ export default {
       votedWorks: [],
       voteInfo: [],
       promotionInfo: [],
+      judgeCheckNum: 0,
     }
   },
   mounted() {
@@ -111,6 +118,14 @@ export default {
     workBoxClickHandler (item) {
       item.checked = !item.checked
       this.checkChangeHandler(item)
+    },
+    openJudgeRevote () {
+      let data = {
+        revote_num: this.judgeCheckNum
+      }
+      openJudgeRevote(data).then(res => {
+        console.log(res)
+      })
     },
     checkChangeHandler (item) {
       let voteInfo = this.voteInfo

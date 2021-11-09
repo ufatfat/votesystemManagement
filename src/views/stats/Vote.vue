@@ -1,5 +1,17 @@
 <template>
   <div>
+    <div style="margin-bottom: 10px">
+      选择轮次：
+      <el-select v-model="roundIdx" size="mini">
+        <el-option
+            v-for="item in roundInfo"
+            :key="item.round_id"
+            :label="item.round_desc"
+            :value="item.round_index">
+        </el-option>
+      </el-select>&emsp;
+      <el-button @click="getData" type="primary" size="mini">获取数据</el-button>
+    </div>
     <el-table :data="voteInfos" v-loading="tableLoading" @sort-change="sortChange">
       <el-table-column label="作品信息" align="center" fixed="left" sortable="custom">
         <template slot-scope="scope">
@@ -41,6 +53,7 @@ export default {
       num: 20,
       total: 0,
       roundIdx: 1,
+      roundInfo: [],
       voteInfos: [],
       judgeInfos: [],
       order: 0,
@@ -56,6 +69,7 @@ export default {
     this.num = ~~(this.$route.query["num"] ?? 20)
     getRoundInfo().then(res => {
       this.roundIdx = res.data.current_round_idx
+      this.roundInfo = res.data.round_info
       this.getData()
     })
   },

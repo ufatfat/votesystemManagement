@@ -52,6 +52,10 @@ export function deleteRound (data) {
     })
 }
 
+export function openJudgeRevote (data) {
+    return request.post("/manageapi/round/judge_revote", data)
+}
+
 export function createNewJudge (data) {
     return request.post("/manageapi/judge", data)
 }
