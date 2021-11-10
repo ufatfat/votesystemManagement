@@ -10,7 +10,8 @@
             :value="item.round_index">
         </el-option>
       </el-select>&emsp;
-      <el-button @click="getData" type="primary" size="mini">获取数据</el-button>
+      <el-button @click="getData" type="primary" size="mini">获取数据</el-button>&emsp;
+      <el-button @click="download" type="success" size="mini">下载文件</el-button>
     </div>
     <el-table :data="voteInfos" v-loading="tableLoading" @sort-change="sortChange">
       <el-table-column label="作品信息" align="center" fixed="left" sortable="custom">
@@ -133,6 +134,87 @@ export default {
         this.total = res.data.total
         this.tableLoading = false
       })
+    },
+    download () {
+      let str = ["作品名", "总票数"]
+      this.judgeInfos.forEach(item => {
+        str.push(item.name)
+      })
+      str = str.join("\t,") + "\n"
+      let data = {
+        page: 1,
+        num: 0,
+        round_idx: this.roundIdx,
+        sort_order: this.order,
+      }
+      getVotesStats(data).then(res => {
+        let d = res.data.data
+        d.forEach(item => {
+          str += item.name + "\t," + item.votes + "\t,"
+          this.judgeInfos.forEach(i => {
+            if (i.voted_works.includes(item.user_id.toString())) str += "1\t,"
+            else str += "0\t,"
+          })
+          str += "\n"
+        })
+        let uri = "data:text/csv;charset=utf-8,\ufeff" + encodeURIComponent(str)
+        let link = document.createElement("a")
+        link.href = uri
+        link.download = "数据.csv"
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      })
+      // let map = ["username", "group_id", "updated_timestamp", "work_name", "img_num", "is_enroll_form_uploaded", "is_design_desc_uploaded", "sex", "edu_bg", "univ", "school", "major", "teacher", "teammates", "in_time", "out_time", "stu_id", "phone", "email", "id_type", "id_no", "msg_source"]
+      // getFileData().then(res => {
+      //   let data = res.data
+      //   data.forEach((item, idx) => {
+      //     str += idx + "\t,"
+      //     for (let i in map) {
+      //       switch (map[i]) {
+      //         case "group_id":
+      //           if (item[map[i]]) {
+      //             str += `${this.workGroup[item[map[i]] - 1] + "\t"},`
+      //           } else {
+      //             str += "未选择,"
+      //           }
+      //           break
+      //         case "img_num":
+      //           str += item[map[i]] === undefined ? "0," : `${item[map[i]] + "\t"},`
+      //           break
+      //         case "sex":
+      //           str += item[map[i]] === 1 ? "男," : "女,"
+      //           break
+      //         case "edu_bg":
+      //           str += `${this.eduBG[item[map[i]] - 1] + "\t"},`
+      //           break
+      //         case "msg_source":
+      //           str += `${this.msgSource[item[map[i]] - 1] + "\t"},`
+      //           break
+      //         case "id_type":
+      //           str += `${this.IDType[[item[map[i]]] - 1] + "\t"},`
+      //           break
+      //         case "is_enroll_form_uploaded":
+      //           if (item[map[i]]) {
+      //             str += "https://ivillages-images.oss-cn-qingdao.aliyuncs.com/1/" + item["user_id"] + "/enroll_form.docx\t,"
+      //           } else {
+      //             str += "暂未上传,"
+      //           }
+      //           break
+      //         case "is_design_desc_uploaded":
+      //           if (item[map[i]]) {
+      //             str += "https://ivillages-images.oss-cn-qingdao.aliyuncs.com/1/" + item["user_id"] + "/design_desc.docx\t,"
+      //           } else {
+      //             str += "暂未上传,"
+      //           }
+      //           break
+      //         default:
+      //           str += `${item[map[i]] + "\t"},`
+      //       }
+      //     }
+      //     str += "\n"
+      //   })
+      // })
     }
   },
 }
