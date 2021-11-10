@@ -121,7 +121,10 @@ export default {
     },
     getData () {
       this.tableLoading = true
-      getJudgeInfos().then(res => {
+      let data = {
+        round_id: 1,
+      }
+      getJudgeInfos(data).then(res => {
         this.judgeData = res.data
         this.tableLoading = false
       }).catch(() => {

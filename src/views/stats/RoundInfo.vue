@@ -8,9 +8,10 @@
         <span>可晋级：{{ roundInfo[currentRoundIdx-1].promotion_num }}</span>
         <span>已选中：{{ votedWorks.length }}</span>
         <template v-if="promotionNum>0">
-          <div>
-            <el-button size="mini" type="primary" @click="openJudgeRevote">评审端平票重投</el-button>&emsp;
-            <el-input-number size="mini" v-model="judgeCheckNum" controls controls-position="right" :min="0" :max="promotionNum" :step-strictly="true" :step="1" label="选择数量"></el-input-number>
+          <div style="display: flex; align-items: center;">
+            评审端重投：
+            <el-input-number size="mini" v-model="judgeCheckNum" controls controls-position="right" :min="0" :max="promotionNum" :step-strictly="true" :step="1" label="选择数量"></el-input-number>&emsp;
+            <el-button size="mini" type="primary" @click="openJudgeRevote">开启</el-button>
           </div>
         </template>
         <template v-if="currentRoundIdx<roundInfo.length">

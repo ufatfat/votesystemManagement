@@ -7,11 +7,12 @@
       </div>
     </div>
     <el-table :data="enrollStatsData" v-loading="tableLoading" style="width: 100%; margin: 20px auto;" :fit="true" >
-      <el-table-column type="index" label="序号" align="center" fixed="left">
+      <el-table-column type="index" label="计数" align="center" fixed="left">
         <template slot-scope="scope">
           {{ (page-1)*num+scope.$index+1 }}
         </template>
       </el-table-column>
+      <el-table-column label="作品序号" prop="user_idx" align="center" fixed="left"></el-table-column>
       <el-table-column prop="username" label="姓名" align="center" fixed="left"></el-table-column>
       <el-table-column prop="work_name" label="作品名称" align="center" width="150" fixed="left"></el-table-column>
       <el-table-column prop="img_num" label="图纸张数" align="center" fixed="left"></el-table-column>
