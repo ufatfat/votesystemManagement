@@ -136,7 +136,7 @@ export default {
       })
     },
     download () {
-      let str = ["作品名", "总票数"]
+      let str = ["作品名", "作品编号", "总票数"]
       this.judgeInfos.forEach(item => {
         str.push(item.name)
       })
@@ -150,7 +150,7 @@ export default {
       getVotesStats(data).then(res => {
         let d = res.data.data
         d.forEach(item => {
-          str += item.name + "\t," + item.votes + "\t,"
+          str += item.name + "\t," + item.user_idx + "\t," + item.votes + "\t,"
           this.judgeInfos.forEach(i => {
             if (i.voted_works.includes(item.user_id.toString())) str += "1\t,"
             else str += "0\t,"

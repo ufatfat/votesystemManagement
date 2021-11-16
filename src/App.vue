@@ -9,6 +9,11 @@
 export default {
   name: 'App',
   components: {
+  },
+  mounted() {
+    this.axios.get("/contest_id").then(res => {
+      this.axios.defaults.headers["ContestID"] = res.data.contest_id
+    })
   }
 }
 </script>

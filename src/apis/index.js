@@ -58,6 +58,10 @@ export function openJudgeRevote (data) {
     return request.post("/manageapi/round/judge_revote", data)
 }
 
+export function getJudgeRevoteStatus () {
+    return request.get("manageapi/round/judge_revote")
+}
+
 export function createNewJudge (data) {
     return request.post("/manageapi/judge", data)
 }

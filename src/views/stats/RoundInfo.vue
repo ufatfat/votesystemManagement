@@ -8,10 +8,9 @@
         <span>可晋级：{{ roundInfo[currentRoundIdx-1].promotion_num }}</span>
         <span>已选中：{{ votedWorks.length }}</span>
         <template v-if="promotionNum>0">
-          <div style="display: flex; align-items: center;">
-            评审端重投：
-            <el-input-number size="mini" v-model="judgeCheckNum" controls controls-position="right" :min="0" :max="promotionNum" :step-strictly="true" :step="1" label="选择数量"></el-input-number>&emsp;
-            <el-button size="mini" type="primary" @click="openJudgeRevote">开启</el-button>
+          <div>
+            <el-date-picker type="datetime" value-format="yyyy-MM-dd HH:mm:ss" v-model="endDateTime" size="mini" @change="printDatetime" placeholder="选择截止时间"></el-date-picker>&emsp;
+            <el-button size="mini" type="primary" @click="openJudgeRevote" :disabled="this.judgeRevoteStatus" :loading="loading.judgeRevote">开启评审端重投</el-button>
           </div>
         </template>
         <template v-if="currentRoundIdx<roundInfo.length">
@@ -63,7 +62,7 @@
 
 <script>
 import RoundTable from "../../components/roundInfo/RoundTable";
-import {openNextRound, getRoundInfo, getPromotionInfo, openJudgeRevote} from "../../apis";
+import {openNextRound, getRoundInfo, getPromotionInfo, openJudgeRevote, getJudgeRevoteStatus} from "../../apis";
 
 export default {
   name: "RoundInfo",
@@ -79,13 +78,21 @@ export default {
       votedWorks: [],
       voteInfo: [],
       promotionInfo: [],
-      judgeCheckNum: 0,
+      judgeRevoteStatus: false,
+      endDateTime: "",
+      endTimestamp: 0,
+      loading: {
+        judgeRevote: false,
+      }
     }
   },
   mounted() {
     getRoundInfo().then(res => {
       this.currentRoundIdx = res.data.current_round_idx
       this.roundInfo = res.data.round_info
+    })
+    getJudgeRevoteStatus().then(res => {
+      this.judgeRevoteStatus = res.data.msg
     })
     this.getData()
   },
@@ -108,6 +115,9 @@ export default {
     }
   },
   methods: {
+    printDatetime () {
+      this.endTimestamp = (new Date(this.endDateTime).getTime()) / 1000
+    },
     pageChangeHandler (curPage) {
       this.page = curPage
       this.getData()
@@ -121,11 +131,23 @@ export default {
       this.checkChangeHandler(item)
     },
     openJudgeRevote () {
+      this.loading.judgeRevote = true
       let data = {
-        revote_num: this.judgeCheckNum
+        end_timestamp: this.endTimestamp,
       }
-      openJudgeRevote(data).then(res => {
-        console.log(res)
+      openJudgeRevote(data).then(() => {
+        this.$message({
+          type: "success",
+          message: "评审端重投已开启"
+        })
+        this.judgeRevoteStatus = true
+        this.loading.judgeRevote = false
+      }).catch(() => {
+        this.$message({
+          type: "error",
+          message: "开启失败，请联系开发者"
+        })
+        this.loading.judgeRevote = false
       })
     },
     checkChangeHandler (item) {
@@ -250,6 +272,9 @@ export default {
           else item.checked = false
           if (item.work_name === "") item.work_name = "测试"
           if (!item.img_list ?? true) item.img_list = ["https://ivillages-images.oss-cn-qingdao.aliyuncs.com/1/static/imgs/test.png"]
+          item.img_list.forEach((i, idx) => {
+            item.img_list[idx] = i.slice(0, i.lastIndexOf(".")) + "_compressed" + i.slice(i.lastIndexOf("."), i.length)
+          })
         })
         this.promotionInfo = data
       })
