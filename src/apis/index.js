@@ -81,3 +81,31 @@ export function getPromotionInfo (data) {
         params: data
     })
 }
+
+export function getConfig () {
+    return request.get("/api/config")
+}
+
+export function getContestInfo () {
+    return request.get("/manageapi/system/contest")
+}
+
+export function updateContest (data) {
+    return request.put("/manageapi/system/contest", data)
+}
+
+export function uploadImage (data) {
+    return request.post("/manageapi/system/image", data, {
+        "Content-Type": "multipart/form-data",
+    })
+}
+
+export function deleteContest (data) {
+    return request.delete("/manageapi/system/contest", {
+        params: data,
+    })
+}
+
+export function createContest (data) {
+    return request.post("/manageapi/system/contest", data)
+}

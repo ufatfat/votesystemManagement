@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import {createNewJudge, deleteJudge, getJudgeInfos} from "../../apis";
+import {createNewJudge, deleteJudge, getJudgeInfos} from "../../../apis";
 import JudgeInfoForm from "./JudgeInfoForm";
 
 export default {

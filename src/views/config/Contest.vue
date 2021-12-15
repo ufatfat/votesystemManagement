@@ -18,8 +18,8 @@
 
 <script>
 import {getRoundInfo, deleteRound, createNewRound} from "../../apis";
-import RoundConfig from "../../components/config/RoundConfig";
-import JudgeConfig from "../../components/config/JudgeConfig";
+import RoundConfig from "../../components/config/contest/RoundConfig";
+import JudgeConfig from "../../components/config/contest/JudgeConfig";
 
 export default {
   name: "Contest",

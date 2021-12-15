@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import {updateRoundInfo} from "../../apis";
+import {updateRoundInfo} from "../../../apis";
 
 export default {
   name: "RoundInfoForm",

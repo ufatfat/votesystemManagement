@@ -53,10 +53,30 @@ const router = new Router({
                     path: "system_config",
                     name: "system_config",
                     component: () => import("@/views/config/System"),
+                    redirect: "system_config/general",
                     meta: {
                         title: "系统设置",
                         requireSignIn: true,
-                    }
+                    },
+                    children: [
+                        {
+                            path: "general",
+                            name: "general",
+                            component: () => import("@/components/config/system/General"),
+                            meta: {
+                                title: "系统设置",
+                                requireSignedIn: true,
+                            }
+                        }, {
+                            path: "pages",
+                            name: "pages",
+                            component: () => import("@/components/config/system/Pages"),
+                            meta: {
+                                title: "页面修改",
+                                requireSignedIn: true,
+                            }
+                        }
+                    ]
                 }, {
                     path: "contest_config",
                     name: "contest_config",

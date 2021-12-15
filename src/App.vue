@@ -5,14 +5,31 @@
 </template>
 
 <script>
+import {getConfig} from "./apis";
+import {mapGetters, mapMutations} from "vuex";
 
 export default {
   name: 'App',
   components: {
   },
+  computed: {
+    ...mapGetters([
+        "config"
+    ])
+  },
+  methods: {
+    ...mapMutations([
+        "updateConfig"
+    ])
+  },
   mounted() {
     this.axios.get("/contest_id").then(res => {
       this.axios.defaults.headers["ContestID"] = res.data.contest_id
+      getConfig().then(res => {
+        let d = res.data
+        d.config = JSON.parse(d.config)
+        this.updateConfig(d)
+      })
     })
   }
 }

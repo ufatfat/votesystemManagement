@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import {getRoundInfo, deleteRound, createNewRound} from "../../apis";
+import {getRoundInfo, deleteRound, createNewRound} from "../../../apis";
 import RoundInfoForm from "./RoundInfoForm";
 
 export default {

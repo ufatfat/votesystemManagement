@@ -1,43 +1,42 @@
 <template>
   <div id="header">
     <div class="leftTitle">
-      <img :src="headerRes.logo" class="logo" />
-      <span class="contestName">{{ headerRes.contestName }}</span>
+      <el-image :src="config.config.common.logoImg" class="logo"></el-image>
       <el-menu
           style="margin-left: 20px;"
           :default-active="$router.currentRoute.name"
           mode="horizontal"
           :router="true"
       >
-        <el-menu-item index="index">
+        <el-menu-item index="/index">
           <span slot="title">首页</span>
         </el-menu-item>
-        <el-submenu index="stats">
+        <el-submenu index="/stats">
           <template slot="title">
             <span>当前竞赛</span>
           </template>
           <el-menu-item-group>
             <template slot="title">投稿</template>
-            <el-menu-item style="text-align: center;" index="enroll_stats">投稿情况</el-menu-item>
+            <el-menu-item style="text-align: center;" index="/enroll_stats">投稿情况</el-menu-item>
             <el-menu-item style="text-align: center;" @click="getFileData">下载投稿数据</el-menu-item>
           </el-menu-item-group>
           <el-menu-item-group>
             <template slot="title">评审</template>
-            <el-menu-item style="text-align: center;" index="vote_stats">投票统计</el-menu-item>
-            <el-menu-item style="text-align: center;" index="round_info">轮次信息</el-menu-item>
+            <el-menu-item style="text-align: center;" index="/vote_stats">投票统计</el-menu-item>
+            <el-menu-item style="text-align: center;" index="/round_info">轮次信息</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
-        <el-submenu index="config">
+        <el-submenu index="/config">
           <template slot="title">
             <span>设置</span>
           </template>
           <el-menu-item-group>
             <template slot="title">系统</template>
-            <el-menu-item style="text-align: center;" disabled index="system_config">系统设置</el-menu-item>
+            <el-menu-item style="text-align: center;" index="/system_config">系统设置</el-menu-item>
           </el-menu-item-group>
           <el-menu-item-group>
             <template slot="title">比赛</template>
-            <el-menu-item style="text-align: center;" index="contest_config">比赛设置</el-menu-item>
+            <el-menu-item style="text-align: center;" index="/contest_config">比赛设置</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
       </el-menu>
@@ -59,9 +58,6 @@ export default {
   name: "Header",
   data () {
     return {
-      headerRes: {
-        logo: "https://ivillages-images.oss-cn-qingdao.aliyuncs.com/1/static/imgs/logo.png",
-      },
       eduBG: ["中职中专","高职高专","本科","硕士","博士","其它"],
       IDType: ["身份证","护照","港澳居民来往内地通行证"],
       msgSource: ["乡村复兴论坛","知识雷锋","其它"],
@@ -71,6 +67,7 @@ export default {
   computed: {
     ...mapGetters([
       "userInfo",
+      "config",
     ])
   },
   watch: {
@@ -78,6 +75,7 @@ export default {
     }
   },
   mounted() {
+    this.eduBG = this.config
   },
   methods: {
     ...mapMutations([
@@ -178,5 +176,8 @@ export default {
 #header .rightBtn {
   margin-right: 32px;
 }
-
+.logo {
+  width: 56px;
+  height: 56px
+}
 </style>

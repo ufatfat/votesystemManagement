@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import {updateJudgeInfo} from "../../apis";
+import {updateJudgeInfo} from "../../../apis";
 
 export default {
   name: "JudgeInfoForm",
