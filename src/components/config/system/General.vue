@@ -82,6 +82,84 @@
           </el-form-item>
         </el-form>
       </fieldset>
+      <fieldset>
+        <legend>注册设置</legend>
+        <div style="">
+          <el-checkbox border v-model="signUpRes.name.display" @change="infoChange($event, 'name')">
+            姓名&emsp;&emsp;
+            <el-checkbox v-model="signUpRes.name.required" @change="requiredChange($event, 'name')">是否必填</el-checkbox>
+          </el-checkbox>
+          <el-checkbox border v-model="signUpRes.sex.display">
+            性别&emsp;&emsp;
+            <el-checkbox v-model="signUpRes.sex.required">是否必填</el-checkbox>
+          </el-checkbox>
+          <el-checkbox border v-model="signUpRes.age.display">
+            年龄&emsp;&emsp;
+            <el-checkbox v-model="signUpRes.age.required">是否必填</el-checkbox>
+          </el-checkbox>
+          <el-checkbox border v-model="signUpRes.job.display">
+            职位&emsp;&emsp;
+            <el-checkbox v-model="signUpRes.job.required">是否必填</el-checkbox>
+          </el-checkbox>
+          <el-checkbox border v-model="signUpRes.org.display">
+            单位名称&emsp;&emsp;
+            <el-checkbox v-model="signUpRes.org.required">是否必填</el-checkbox>
+          </el-checkbox>
+          <el-checkbox border v-model="signUpRes.eduBG.display">
+            学历层次&emsp;&emsp;
+            <el-checkbox v-model="signUpRes.eduBG.required">是否必填</el-checkbox>
+          </el-checkbox>
+          <el-checkbox border v-model="signUpRes.univ.display">
+            学校&emsp;&emsp;
+            <el-checkbox v-model="signUpRes.univ.required">是否必填</el-checkbox>
+          </el-checkbox>
+          <el-checkbox border v-model="signUpRes.school.display">
+            学院&emsp;&emsp;
+            <el-checkbox v-model="signUpRes.school.required">是否必填</el-checkbox>
+          </el-checkbox>
+          <el-checkbox border v-model="signUpRes.major.display">
+            专业&emsp;&emsp;
+            <el-checkbox v-model="signUpRes.major.required">是否必填</el-checkbox>
+          </el-checkbox>
+          <el-checkbox border v-model="signUpRes.stuID.display">
+            学号&emsp;&emsp;
+            <el-checkbox v-model="signUpRes.stuID.required">是否必填</el-checkbox>
+          </el-checkbox>
+          <el-checkbox border v-model="signUpRes.teacher.display">
+            指导老师&emsp;&emsp;
+            <el-checkbox v-model="signUpRes.teacher.required">是否必填</el-checkbox>
+          </el-checkbox>
+          <el-checkbox border v-model="signUpRes.msgSrc.display">
+            信息来源&emsp;&emsp;
+            <el-checkbox v-model="signUpRes.msgSrc.required">是否必填</el-checkbox>
+          </el-checkbox>
+          <el-checkbox border v-model="signUpRes.teammate.display">
+            团队成员&emsp;&emsp;
+            <el-checkbox v-model="signUpRes.teammate.required">是否必填</el-checkbox>
+          </el-checkbox>
+          <el-checkbox border v-model="signUpRes.inTime.display">
+            入学时间&emsp;&emsp;
+            <el-checkbox v-model="signUpRes.inTime.required">是否必填</el-checkbox>
+          </el-checkbox>
+          <el-checkbox border v-model="signUpRes.outTime.display">
+            毕业时间&emsp;&emsp;
+            <el-checkbox v-model="signUpRes.outTime.required">是否必填</el-checkbox>
+          </el-checkbox>
+          <el-checkbox border v-model="signUpRes.ID.display">
+            证件类型&emsp;&emsp;
+            <el-checkbox v-model="signUpRes.ID.required">是否必填</el-checkbox>
+          </el-checkbox>
+          <el-checkbox border v-model="signUpRes.IDNo.display">
+            证件号码&emsp;&emsp;
+            <el-checkbox v-model="signUpRes.IDNo.required">是否必填</el-checkbox>
+          </el-checkbox>
+          <el-checkbox border v-model="signUpRes.email.display">
+            电子邮箱&emsp;&emsp;
+            <el-checkbox v-model="signUpRes.email.required">是否必填</el-checkbox>
+          </el-checkbox>
+        </div>
+        <el-button type="primary" size="mini" @click="infoSubmit">提交</el-button>
+      </fieldset>
     </fieldset>
     <input id="file1" type="file" @change="updateImg(1)" style="display: none;" accept="image/png, image/jpeg">
     <input id="file2" type="file" @change="updateImg(2)" style="display: none;" accept="image/png, image/jpeg">
@@ -122,6 +200,80 @@ export default {
           "registryEndTimestamp": 0,
           "uploadBeginTimestamp": 0
         },
+        "signUpRes": {
+          "name": {
+            "display": false,
+            "required": false,
+          },
+          "sex": {
+            "display": false,
+            "required": false,
+          },
+          "age": {
+            "display": false,
+            "required": false,
+          },
+          "org": {
+            "display": false,
+            "required": false,
+          },
+          "job": {
+            "display": false,
+            "required": false,
+          },
+          "eduBG": {
+            "display": false,
+            "required": false,
+          },
+          "univ": {
+            "display": false,
+            "required": false,
+          },
+          "school": {
+            "display": false,
+            "required": false,
+          },
+          "major": {
+            "display": false,
+            "required": false,
+          },
+          "stuID": {
+            "display": false,
+            "required": false,
+          },
+          "teacher": {
+            "display": false,
+            "required": false,
+          },
+          "msgSrc": {
+            "display": false,
+            "required": false,
+          },
+          "teammate": {
+            "display": false,
+            "required": false,
+          },
+          "inTime": {
+            "display": false,
+            "required": false,
+          },
+          "outTime": {
+            "display": false,
+            "required": false,
+          },
+          "ID": {
+            "display": false,
+            "required": false,
+          },
+          "IDNo": {
+            "display": false,
+            "required": false,
+          },
+          "email": {
+            "display": false,
+            "required": false,
+          },
+        },
         "uploadRes": {
           "workGroups": [],
           "maxFileSize": 0,
@@ -143,6 +295,80 @@ export default {
       workGroups: [],
       workGroup: 0,
       newWorkGroup: "",
+      signUpRes: {
+        "name": {
+          "display": false,
+          "required": false,
+        },
+        "sex": {
+          "display": false,
+          "required": false,
+        },
+        "age": {
+          "display": false,
+          "required": false,
+        },
+        "org": {
+          "display": false,
+          "required": false,
+        },
+        "job": {
+          "display": false,
+          "required": false,
+        },
+        "eduBG": {
+          "display": false,
+          "required": false,
+        },
+        "univ": {
+          "display": false,
+          "required": false,
+        },
+        "school": {
+          "display": false,
+          "required": false,
+        },
+        "major": {
+          "display": false,
+          "required": false,
+        },
+        "stuID": {
+          "display": false,
+          "required": false,
+        },
+        "teacher": {
+          "display": false,
+          "required": false,
+        },
+        "msgSrc": {
+          "display": false,
+          "required": false,
+        },
+        "teammate": {
+          "display": false,
+          "required": false,
+        },
+        "inTime": {
+          "display": false,
+          "required": false,
+        },
+        "outTime": {
+          "display": false,
+          "required": false,
+        },
+        "ID": {
+          "display": false,
+          "required": false,
+        },
+        "IDNo": {
+          "display": false,
+          "required": false,
+        },
+        "email": {
+          "display": false,
+          "required": false,
+        },
+      },
     }
   },
   computed: {
@@ -165,6 +391,7 @@ export default {
         this.conf = this.config.config
         this.contestName = this.config.contestName
         this.contestSelectorLoading = false
+        this.signUpRes = this.conf.signUpRes
 
         this.updateDatetimes()
         let maxFileSize = this.config.config.uploadRes.maxFileSize, i = 0
@@ -177,6 +404,35 @@ export default {
         this.maxImageNum = this.config.config.uploadRes.maxImageNum
         this.workGroups = this.config.config.uploadRes.workGroups
         console.log(this.conf)
+      })
+    },
+    infoChange (evt, opt) {
+      this.signUpRes[opt].display = evt
+    },
+    requiredChange (evt, opt) {
+      this.signUpRes[opt].required = evt
+    },
+    infoSubmit () {
+      let config = this.config.config
+      config.signUpRes = this.signUpRes
+      console.log(this.signUpRes)
+      let data = {
+        contest_id: this.contestID,
+        config: JSON.stringify(config)
+      }
+      updateContest(data).then(() => {
+        this.$message({
+          type: "success",
+          message: "更新成功"
+        })
+        let c = this.config
+        c.config = config
+        this.updateConfig(c)
+      }).catch(err => {
+        this.$message({
+          type: "error",
+          message: "更新失败，报错：" + err.response.data.msg
+        })
       })
     },
     deleteContest () {
@@ -232,6 +488,80 @@ export default {
           "uploadEndTimestamp": 0,
           "registryEndTimestamp": 0,
           "uploadBeginTimestamp": 0
+        },
+        "signUpRes": {
+          "name": {
+            "display": false,
+            "required": false,
+          },
+          "sex": {
+            "display": false,
+            "required": false,
+          },
+          "age": {
+            "display": false,
+            "required": false,
+          },
+          "org": {
+            "display": false,
+            "required": false,
+          },
+          "job": {
+            "display": false,
+            "required": false,
+          },
+          "eduBG": {
+            "display": false,
+            "required": false,
+          },
+          "univ": {
+            "display": false,
+            "required": false,
+          },
+          "school": {
+            "display": false,
+            "required": false,
+          },
+          "major": {
+            "display": false,
+            "required": false,
+          },
+          "stuID": {
+            "display": false,
+            "required": false,
+          },
+          "teacher": {
+            "display": false,
+            "required": false,
+          },
+          "msgSrc": {
+            "display": false,
+            "required": false,
+          },
+          "teammate": {
+            "display": false,
+            "required": false,
+          },
+          "inTime": {
+            "display": false,
+            "required": false,
+          },
+          "outTime": {
+            "display": false,
+            "required": false,
+          },
+          "ID": {
+            "display": false,
+            "required": false,
+          },
+          "IDNo": {
+            "display": false,
+            "required": false,
+          },
+          "email": {
+            "display": false,
+            "required": false,
+          },
         },
         "uploadRes": {
           "workGroups": [],
